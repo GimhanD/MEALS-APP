@@ -16,7 +16,7 @@ export default IconButton;
 
 const styles = StyleSheet.create ({
     iconButton: {
-       marginRight: 1
+       marginRight: 10
     },
     pressed: {
         opacity: 0.35
