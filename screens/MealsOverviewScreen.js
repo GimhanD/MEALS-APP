@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect } from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 import MealItem from "../components/MealItem";
 
@@ -11,25 +11,26 @@ function MealsOverviewScreen({ route, navigation }) {
     return mealItem.categoryIds.indexOf(catID) >= 0;
   });
 
-useLayoutEffect(() => {
-    const categoryTitle = CATEGORIES.find((catrgory) => catrgory.id ===catID ).title
+  useLayoutEffect(() => {
+    const categoryTitle = CATEGORIES.find(
+      (catrgory) => catrgory.id === catID
+    ).title;
 
-navigation.setOptions({
-    title : categoryTitle
-});
-}, [catID, navigation]);
-
+    navigation.setOptions({
+      title: categoryTitle,
+    });
+  }, [catID, navigation]);
 
   function renderMealItem(itemData) {
     function pressHandler() {
-        navigation.navigate("MealsDetailsScreen", {
-            mealID : itemData.item.id
-        })
-    };
+      navigation.navigate("MealsDetailsScreen", {
+        mealID: itemData.item.id,
+      });
+    }
 
     const item = itemData.item;
     const MealData = {
-        id: item.id,
+      id: item.id,
       title: item.title,
       imageUrl: item.imageUrl,
       affordability: item.affordability,
@@ -37,7 +38,7 @@ navigation.setOptions({
       duration: item.duration,
     };
 
-    return <MealItem {...MealData}  onPress={pressHandler} />;
+    return <MealItem {...MealData} onPress={pressHandler} />;
   }
 
   return (

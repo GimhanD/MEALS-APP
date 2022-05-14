@@ -1,55 +1,83 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { useLayoutEffect } from "react";
+import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
+import IconButton from "../components/IconButton";
 import MealDetails from "../components/MealDeatils";
+import List from "../components/MealDetail/List";
+import Subtitle from "../components/MealDetail/Subtitle";
 import { MEALS } from "../data/dummy-data";
 
-function MealsDetailsScreen({ route }) {
+function MealsDetailsScreen({ route, navigation }) {
   const mealId = route.params.mealID;
 
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
 
-  return (
-    <View>
-      <Image source={{ uri: selectedMeal.imageUrl }} />
-      <Text>{selectedMeal.title}</Text>
-      <MealDetails
-        duration={selectedMeal.duration}
-        affordability={selectedMeal.affordability}
-        complexity={selectedMeal.complexity}
-      />
-      <Text>Ingredients</Text>
-      {selectedMeal.ingredients.map(ingredients => <Text key={ingredients}>
-          {ingredients}
-      </Text>)}
-      <Text>Steps</Text>
-      {selectedMeal.steps.map(steps => <Text key={steps}>
-          {steps}
-      </Text>)}
+  function faveoriteIconeHandler() {
+    console.log("pressed");
+  }
 
-    </View>
+  useLayoutEffect(() => {
+    {
+      navigation.setOptions({
+        headerRight: () => {
+          return (
+            <IconButton
+              onPress={faveoriteIconeHandler}
+              icon="star"
+              color="white"
+            />
+          );
+        },
+      });
+    }
+  }, []);
+
+  return (
+    <ScrollView style={styles.rootConatainer}>
+      <View>
+        <Image source={{ uri: selectedMeal.imageUrl }} style={styles.image} />
+        <Text style={styles.title}>{selectedMeal.title}</Text>
+        <MealDetails
+          duration={selectedMeal.duration}
+          affordability={selectedMeal.affordability}
+          complexity={selectedMeal.complexity}
+        />
+        <View style={styles.listOuterContiner}>
+          <View style={styles.listContainer}>
+            <Subtitle>Ingredients</Subtitle>
+            <List data={selectedMeal.ingredients} />
+            <Subtitle>Steps</Subtitle>
+            <List data={selectedMeal.steps} />
+          </View>
+        </View>
+      </View>
+    </ScrollView>
   );
 }
 
 export default MealsDetailsScreen;
 
-const styles = StyleSheet.create ({
-    image: {
-        width: '100%',
-        height: 350,
-    },
-    title: {
-        fontWeight: 'bold',
-        fontSize: 24,
-        margin: 8,
-        textAlign: 'center',
-        color: 'white'
-    },
-    detailText: {
-        color: 'white',
-    },
-    subtitle: {
-        color: 'white',
-        fontSize: 18,
-        fontWeight: 'bold',
-        margin: 4
-    }
-})
+const styles = StyleSheet.create({
+  rootConatainer: {
+    marginBottom: 32,
+  },
+  image: {
+    width: "100%",
+    height: 350,
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 24,
+    margin: 8,
+    textAlign: "center",
+    color: "#351401",
+  },
+  detailText: {
+    color: "white",
+  },
+  listContainer: {
+    width: "80%",
+  },
+  listOuterContiner: {
+    alignItems: "center",
+  },
+});
