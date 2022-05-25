@@ -7,8 +7,10 @@ import MealsDetailsScreen from "./screens/MealsDetailsScreen";
 import { StatusBar } from "expo-status-bar";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import FaveriteScreen from "./screens/FavoriteScreen";
+import { Provider } from "react-redux";
 
-import { Ionicons } from '@expo/vector-icons'; 
+import { Ionicons } from "@expo/vector-icons";
+import store from "./components/store/redux/store";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -27,7 +29,9 @@ function CategoryDrawerNavigatorHandler() {
         component={CategoriesScreen}
         options={{
           title: "All Category",
-          drawerIcon: ({size, color}) => <Ionicons name='home' color={color} size={size} />
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="home" color={color} size={size} />
+          ),
         }}
       />
       <Drawer.Screen
@@ -35,7 +39,9 @@ function CategoryDrawerNavigatorHandler() {
         component={FaveriteScreen}
         options={{
           title: "Faverite",
-          drawerIcon: ({size, color}) => <Ionicons name='star' color={color} size={size} />
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="star" color={color} size={size} />
+          ),
         }}
       />
     </Drawer.Navigator>
@@ -46,42 +52,44 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: "#351401" },
-            headerTintColor: "white",
-            contentStyle: { backgroundColor: "#3f2f25" },
-          }}
-        >
-          <Stack.Screen
-            name="MealsCategory"
-            component={CategoryDrawerNavigatorHandler}
-            options={{
-              title: "All Catrgories",
-              headerShown: false,
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: "#351401" },
+              headerTintColor: "white",
+              contentStyle: { backgroundColor: "#3f2f25" },
             }}
-          />
-          <Stack.Screen
-            name="MealsOverView"
-            component={MealsOverviewScreen}
-            // options={({route, navigation}) => {
-            //   const title = route.params.title;
-            //   return {
-            //     title: title,
-            //   };
-            // }
-            //}
-          />
-          <Stack.Screen
-            name="MealsDetailsScreen"
-            component={MealsDetailsScreen}
-            // options={{headerRight: () => {
-            //   return <Button title="tap me"></Button>
-            // }}}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+          >
+            <Stack.Screen
+              name="MealsCategory"
+              component={CategoryDrawerNavigatorHandler}
+              options={{
+                title: "All Catrgories",
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="MealsOverView"
+              component={MealsOverviewScreen}
+              // options={({route, navigation}) => {
+              //   const title = route.params.title;
+              //   return {
+              //     title: title,
+              //   };
+              // }
+              //}
+            />
+            <Stack.Screen
+              name="MealsDetailsScreen"
+              component={MealsDetailsScreen}
+              // options={{headerRight: () => {
+              //   return <Button title="tap me"></Button>
+              // }}}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
     </>
   );
 }
